@@ -1,0 +1,23 @@
+{
+  "now": 0,
+  "quota": 12,
+  "jobs": {},
+  "objects": {
+    "a": {
+      "media": "tape1",
+      "size": 6,
+      "version": 1
+    },
+    "b": {
+      "media": "tape1",
+      "size": 4,
+      "version": 1
+    },
+    "c": {
+      "media": "tape2",
+      "size": 8,
+      "version": 1
+    }
+  },
+  "dropResponse": false
+}
