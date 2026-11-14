@@ -17,7 +17,20 @@
       "media": "tape2",
       "size": 8,
       "version": 1
+    },
+    "d": {
+      "media": "tape2",
+      "size": 3,
+      "version": 1
+    },
+    "e": {
+      "media": "tape3",
+      "size": 2,
+      "version": 1
     }
   },
-  "dropResponse": false
+  "dropResponse": false,
+  "dropRecall": false,
+  "rejectRecall": false,
+  "blockData": false
 }

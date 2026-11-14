@@ -13,7 +13,7 @@ npm test
 npm start
 ```
 
-`npm start` 在标准输出报告来源地址。默认绑定本机回环地址并使用动态端口；可通过 `HOST` 与 `PORT` 指定监听地址和端口，例如 `HOST=127.0.0.1 PORT=8080 npm start`。按 Ctrl+C 关闭来源；动态端口避免与同机其他接入站冲突。`npm run demo` 在同一进程启动来源，读取一次目录后退出，不代表持续接收业务已经完成。
+`npm start` 在标准输出报告来源地址。默认绑定本机回环地址并使用动态端口；可通过 `HOST` 与 `PORT` 指定监听地址和端口，例如 `HOST=127.0.0.1 PORT=8080 npm start`。按 Ctrl+C 关闭来源；动态端口避免与同机其他接入站冲突。`npm run demo` 在同一进程启动来源，读取一次目录后退出，不代表持续接收业务已经完成。`npm run demo:collection` 启动面向资料集合的召回采集演示，用可推进时钟复现配额耗尽、急件插入、超时在途、全部取消后的迟到完成与版本隔离，不做真实冷存储等待；可加场景参数 `npm run demo:collection -- quota|timeout|cancel|version`。
 
 ```sh
 docker build -t archive-recall:local .
@@ -26,9 +26,15 @@ docker run --rm --network none archive-recall:local npm run demo
 ## 目录
 
 - `src/source.mjs`：本地来源生命周期与HTTP入口。
-- `src/client.mjs`：目录读取及原始字节获取。
+- `src/client.mjs`：目录读取、原始字节获取与区分超时/故障的采集网关客户端。
+- `src/planner.mjs`：纯函数召回规划（介质批次、公平排序、老化提权、阻塞原因）。
+- `src/service.mjs`：集合召回采集服务（共享去重、幂等重试、取消复核、到期/版本处理、队列视图）。
+- `src/vault.mjs`：按版本隔离的可靠保存库（原子写入、校验和清单、隔离区）。
+- `src/demo-collection.mjs`：可推进时钟的采集服务演示。
 - `fixtures/source.json`：来源初始状态。
 - `docs/source-contract.md`：来源协议范围、控制与领域语义。
+- `docs/collection-service.md`：采集服务设计决策与场景说明。
 - `test/source.test.mjs`：实际来源集成测试。
+- `test/collection.test.mjs`：规划器与采集服务集成测试。
 
 运行时状态仅用于来源模拟，重启来源会回到 fixtures 中的值。接入业务自己的持久状态请使用 `.local/` 或明确的外部路径。来源管理入口 `/state` 和 `/control` 是本地操作设施，不能作为绕过浏览器页面的业务写入捷径。
